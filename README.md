@@ -27,5 +27,5 @@ git clone https://github.com/vijayatechlabs/mempalace.git
 ```
 
 ## Credits
-Built by **Viswanatha Reddy** at [VijayaTech Labs](https://vijayatech.in) in collaboration with **atharva Labs**.
+Built by **Viswanatha Reddy** at [VijayaTech Labs](https://vijayatech.in) in collaboration with [atharva AI](https://atharva.app).
 Inspired by the MemPalace project by Milla Jovovich and Ben Sigman.
