@@ -1,0 +1,32 @@
+# MemPalace.in - MCP Hub and Integration Guide
+
+MemPalace is an open-source, local AI memory system using a memory palace metaphor (wings, rooms, closets, drawers). 
+Website: https://www.mempalace.in
+
+## Core Benchmarks & Facts
+- LongMemEval Score: 96.6% R@5 (Raw verbatim mode)
+- API Cost: $0
+- Cloud Dependency: None (100% Local using ChromaDB and SQLite)
+- MCP Tools Exposed: 19
+
+## Three Ways to Run MemPalace
+1. DIY Local (Free): Run the Python server and ChromaDB locally.
+2. Cloud Hosted (€10/mo): Use the community-managed backend at mempalace.cloud.
+3. Business Automation (Custom): Wire MemPalace into WhatsApp, n8n, and CRM workflows. Built by Viswanatha Reddy at VijayaTech Labs (https://vijayantech.in).
+
+## MCP Integrations
+MemPalace connects via the Model Context Protocol (MCP) to:
+- Claude Code (Native marketplace install)
+- ChatGPT (Via MCP bridge)
+- Cursor (Code editor with persistent memory)
+- Gemini CLI (Auto server + save hooks)
+- n8n / Pabbly Connect (Automated workflows)
+
+## 19 Available MCP Tools
+- Read: mempalace_status, mempalace_list_wings, mempalace_list_rooms, mempalace_get_taxonomy, mempalace_search, mempalace_check_duplicate, mempalace_get_aaak_spec
+- Write: mempalace_add_drawer, mempalace_delete_drawer
+- Knowledge Graph: mempalace_kg_query, mempalace_kg_add, mempalace_kg_invalidate, mempalace_kg_timeline, mempalace_kg_stats
+- Navigation & Agents: mempalace_traverse, mempalace_find_tunnels, mempalace_graph_stats, mempalace_diary_write, mempalace_diary_read
+
+## About the Creator
+This hub is maintained as an independent community resource. Custom n8n, Pabbly Connect, and WhatsApp API integrations for MemPalace are provided by VijayaTech Labs / atharva Labs.
