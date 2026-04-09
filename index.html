@@ -1,0 +1,1088 @@
+<!-- 
+GitHub Pages Deployment Instructions:
+1. Initialize a git repository: `git init`
+2. Add this file: `git add index.html`
+3. Commit the file: `git commit -m "Initial commit"`
+4. Push to a new GitHub repository you created.
+5. Go to your repository Settings -> Pages.
+6. Under "Build and deployment", set "Source" to "Deploy from a branch".
+7. Select the `main` branch (or `master`) and `/ (root)` folder, then click Save.
+10. Your site will be live at `https://<username>.github.io/<repository-name>/` or your custom domain soon after.
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO / GEO Meta Tags -->
+    <title>MemPalace MCP Hub | Free Local AI Memory System</title>
+    <meta name="description"
+        content="Integrate MemPalace via MCP to Claude, ChatGPT, Cursor, and Gemini. Achieve 96.6% recall with zero cloud and zero API costs.">
+    <meta property="og:title" content="MemPalace MCP Hub | Free Local AI Memory System">
+    <meta property="og:description"
+        content="Integrate MemPalace via MCP to Claude, ChatGPT, Cursor, and Gemini. Achieve 96.6% recall with zero cloud and zero API costs.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="MemPalace MCP Hub | Free Local AI Memory System">
+    <meta name="twitter:description"
+        content="Integrate MemPalace via MCP to Claude, ChatGPT, Cursor, and Gemini. Achieve 96.6% recall with zero cloud and zero API costs.">
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "SoftwareApplication",
+          "name": "MemPalace",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "Any",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "description": "Free, Local AI Memory System offering 96.6% R@5 on LongMemEval."
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+               "@type": "Question",
+               "name": "What is MemPalace?",
+               "acceptedAnswer": {
+                 "@type": "Answer",
+                 "text": "An open-source, local AI memory system that uses a memory palace metaphor (wings, rooms, closets, drawers) to store and retrieve agent conversations."
+               }
+            },
+            {
+               "@type": "Question",
+               "name": "Does MemPalace require an API key?",
+               "acceptedAnswer": {
+                 "@type": "Answer",
+                 "text": "No. MemPalace runs 100% locally using ChromaDB and SQLite, requiring zero cloud dependencies."
+               }
+            },
+            {
+               "@type": "Question",
+               "name": "What is the LongMemEval score for MemPalace?",
+               "acceptedAnswer": {
+                 "@type": "Answer",
+                 "text": "In raw verbatim mode, MemPalace scores 96.6% R@5 on 500 questions, independent of LLM APIs."
+               }
+            },
+            {
+               "@type": "Question",
+               "name": "How do I connect MemPalace to Claude?",
+               "acceptedAnswer": {
+                 "@type": "Answer",
+                 "text": "Run `claude plugin marketplace add milla-jovovich/mempalace` in your terminal."
+               }
+            }
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "url": "https://www.mempalace.in/",
+          "name": "MemPalace.in",
+          "publisher": {
+            "@type": "Organization",
+            "name": "VijayaTech Labs & atharva Labs",
+            "url": "https://vijayantech.com"
+          }
+        }
+      ]
+    }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        deep: '#0f0f0f',
+                        surface: '#171717',
+                        elevated: '#1f1f1f',
+                        teal: {
+                            DEFAULT: '#2dd4bf',
+                            hover: '#14b8a6'
+                        },
+                        text: '#e5e5e5',
+                        muted: '#a3a3a3'
+                    },
+                    fontFamily: {
+                        serif: ['\"Instrument Serif\"', 'serif'],
+                        sans: ['\"Inter\"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #0f0f0f;
+            color: #e5e5e5;
+            scroll-behavior: smooth;
+        }
+
+        ::selection {
+            background-color: #2dd4bf;
+            color: #0f0f0f;
+        }
+
+        /* Nav link hover */
+        .nav-link {
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -2px;
+            left: 0;
+            background-color: #2dd4bf;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Tabs Animation */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        .tab-btn {
+            border-bottom: 2px solid transparent;
+            color: #a3a3a3;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover {
+            color: #e5e5e5;
+        }
+
+        .tab-btn.active {
+            border-bottom-color: #2dd4bf;
+            color: #2dd4bf;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* FAQ Accordion */
+        details {
+            transition: background-color 0.2s ease;
+        }
+
+        details[open] {
+            background-color: #1f1f1f;
+        }
+
+        details>summary {
+            list-style: none;
+            cursor: pointer;
+        }
+
+        details>summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .faq-icon {
+            transition: transform 0.3s ease;
+        }
+
+        details[open] .faq-icon {
+            transform: rotate(45deg);
+            color: #2dd4bf;
+        }
+
+        /* Table styles */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 1rem;
+            border-bottom: 1px solid #1f1f1f;
+        }
+
+        th {
+            background-color: #171717;
+            font-weight: 600;
+            color: #e5e5e5;
+        }
+
+        tr:hover td {
+            background-color: #171717;
+        }
+    </style>
+</head>
+
+<body class=\"font-sans antialiased min-h-screen flex flex-col\">
+
+    <!-- HEADER -->
+    <header class=\"sticky top-0 z-50 bg-deep/80 backdrop-blur-md border-b border-elevated\">
+        <div class=\"max-w-6xl mx-auto px-6 h-16 flex items-center justify-between\">
+            <a href=\"#\" class=\"group flex items-center gap-2 font-semibold text-lg hover:text-teal transition-colors\">
+                <svg class=\"text-e5e5e5 group-hover:text-teal transition-colors w-6 h-6\" viewBox=\"0 0 24 24\" fill=\"none\"
+                    stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\">
+                    <polygon points=\"12 2 2 7 12 12 22 7 12 2\"></polygon>
+                    <polyline points=\"2 17 12 22 22 17\"></polyline>
+                    <polyline points=\"2 12 12 17 22 12\"></polyline>
+                </svg>
+                MemPalace.in
+            </a>
+
+            <nav class=\"hidden md:flex gap-8 text-sm text-muted\">
+                <a href=\"#story\" class=\"nav-link hover:text-text transition-colors\">The Story</a>
+                <a href=\"#integrations\" class=\"nav-link hover:text-text transition-colors\">Integrations</a>
+                <a href=\"#benchmarks\" class=\"nav-link hover:text-text transition-colors\">Benchmarks</a>
+                <a href=\"#pulse\" class=\"nav-link hover:text-text transition-colors\">Community</a>
+                <a href=\"#faq\" class=\"nav-link hover:text-text transition-colors\">FAQ</a>
+            </nav>
+
+            <a href=\"https://github.com/milla-jovovich/mempalace\" target=\"_blank\" rel=\"noopener noreferrer\"
+                class=\"bg-teal hover:bg-teal-hover text-deep text-sm font-semibold py-2 px-4 rounded transition-colors inline-flex items-center gap-1\">
+                GitHub Repo
+                <svg class=\"w-4 h-4\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"
+                    stroke-linecap=\"round\" stroke-linejoin=\"round\">
+                    <path d=\"M7 17l9.2-9.2M17 17V7H7\" />
+                </svg>
+            </a>
+        </div>
+    </header>
+
+    <main class=\"flex-grow\">
+        <!-- HERO -->
+        <section class=\"py-24 md:py-32 px-6 max-w-4xl mx-auto text-center flex flex-col items-center\">
+            <h1 class=\"font-serif text-5xl md:text-7xl font-bold mb-6 tracking-tight\">Your AI Remembers. Finally.</h1>
+            <p class=\"text-lg md:text-xl text-muted mb-10 max-w-2xl leading-relaxed\">
+                Integrate MemPalace via MCP to Claude, ChatGPT, Cursor, and Gemini. Achieve <span
+                    class=\"text-text font-medium\">96.6% recall</span> with zero cloud and zero API costs.
+            </p>
+
+            <div class=\"flex flex-wrap justify-center gap-3 mb-10\">
+                <span class=\"bg-surface border border-elevated px-3 py-1 rounded-full text-xs font-mono text-teal\">100%
+                    Local</span>
+                <span class=\"bg-surface border border-elevated px-3 py-1 rounded-full text-xs font-mono text-teal\">$0
+                    Subscription</span>
+                <span class=\"bg-surface border border-elevated px-3 py-1 rounded-full text-xs font-mono text-teal\">19
+                    MCP Tools</span>
+                <span class=\"bg-surface border border-elevated px-3 py-1 rounded-full text-xs font-mono text-teal\">96.6%
+                    LongMemEval Score</span>
+            </div>
+
+            <a href=\"#quickstart\"
+                class=\"bg-teal hover:bg-teal-hover text-deep font-semibold py-3 px-8 rounded transition-colors inline-flex items-center gap-2\">
+                View Setup Guide
+                <svg class=\"w-4 h-4\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\">
+                    <path d=\"M12 5v14M19 12l-7 7-7-7\" />
+                </svg>
+            </a>
+        </section>
+
+        <!-- THE STORY -->
+        <section id=\"story\" class=\"py-20 px-6 max-w-4xl mx-auto border-t border-elevated\">
+            <div class=\"flex flex-col md:flex-row gap-12 items-center\">
+                <div class=\"md:w-1/2\">
+                    <h2 class=\"font-serif text-3xl md:text-4xl mb-6\">Why a Hollywood Actress Started Coding AI Tools
+                    </h2>
+                    <p class=\"text-muted mb-4 leading-relaxed\">
+                        Milla Jovovich (Alice in <em>Resident Evil</em>) noticed a glaring issue with LLMs: every new
+                        session suffered from amnesia. Existing memory tools used AI to decide what to forget,
+                        discarding the very reasoning she needed most.
+                    </p>
+                    <p class=\"text-muted mb-6 leading-relaxed\">
+                        Partnering with developer Ben Sigman, they built MemPalace. Their radical approach? Store
+                        <strong>everything</strong> verbatim and make it instantly findable using a \"memory palace\"
+                        metaphor.
+                    </p>
+                    <blockquote
+                        class=\"border-l-2 border-teal pl-4 md:pl-6 italic text-text text-sm md:text-base leading-relaxed opacity-90\">
+                        \"I wanted my AI to remember the way I remember — not just the conclusions, but the journey. The
+                        alternatives I considered... That's what existing memory systems throw away.\"<br>
+                        <span
+                            class=\"text-teal text-xs font-semibold not-italic mt-3 block uppercase tracking-wider\">Milla
+                            Jovovich & Ben Sigman</span>
+                    </blockquote>
+                </div>
+                <div class=\"md:w-1/2 grid grid-cols-2 gap-4 w-full\">
+                    <div
+                        class=\"bg-surface border border-elevated p-6 rounded-lg text-center hover:border-teal/30 transition-colors\">
+                        <div id=\"github-stars\" class=\"text-3xl font-serif text-teal mb-1\">25.4K+</div>
+                        <div class=\"text-xs text-muted uppercase tracking-wider font-medium\">GitHub Stars</div>
+                    </div>
+                    <div
+                        class=\"bg-surface border border-elevated p-6 rounded-lg text-center hover:border-teal/30 transition-colors\">
+                        <div class=\"text-3xl font-serif text-teal mb-1\">100%</div>
+                        <div class=\"text-xs text-muted uppercase tracking-wider font-medium\">LongMemEval</div>
+                    </div>
+                    <div
+                        class=\"bg-surface border border-elevated p-6 rounded-lg text-center hover:border-teal/30 transition-colors\">
+                        <div class=\"text-3xl font-serif text-teal mb-1\">$0</div>
+                        <div class=\"text-xs text-muted uppercase tracking-wider font-medium\">API Cost</div>
+                    </div>
+                    <div
+                        class=\"bg-surface border border-elevated p-6 rounded-lg text-center hover:border-teal/30 transition-colors\">
+                        <div class=\"text-3xl font-serif text-teal mb-1\">Local</div>
+                        <div class=\"text-xs text-muted uppercase tracking-wider font-medium\">Zero Cloud</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- THREE WAYS TO RUN -->
+        <section id=\"pricing\" class=\"py-20 px-6 max-w-6xl mx-auto border-t border-elevated\">
+            <h2 class=\"font-serif text-3xl md:text-4xl mb-12 text-center\">Three Ways to Run MemPalace</h2>
+            <div class=\"grid grid-cols-1 md:grid-cols-3 gap-8\">
+                <!-- DIY -->
+                <div
+                    class=\"bg-surface border border-elevated p-8 rounded-lg flex flex-col hover:border-teal/20 transition-all\">
+                    <h3 class=\"font-serif text-2xl mb-2\">The DIY Way</h3>
+                    <div class=\"text-teal font-mono text-xl mb-4\">$0/mo</div>
+                    <p class=\"text-muted text-sm mb-8 flex-grow leading-relaxed\">Self-host using our MCP guides. Run the
+                        Python server and ChromaDB locally.</p>
+                    <a href=\"#quickstart\"
+                        class=\"border border-elevated hover:border-teal text-text text-sm font-semibold py-3 px-6 rounded text-center transition-colors\">Read
+                        Docs</a>
+                </div>
+
+                <!-- Cloud -->
+                <div
+                    class=\"bg-surface border border-elevated p-8 rounded-lg flex flex-col hover:border-teal/20 transition-all\">
+                    <h3 class=\"font-serif text-2xl mb-2\">The Cloud Way</h3>
+                    <div class=\"text-teal font-mono text-xl mb-4\">€10/mo</div>
+                    <p class=\"text-muted text-sm mb-8 flex-grow leading-relaxed\">Don't want to run a local server? Use
+                        the managed backend hosted by the community.</p>
+                    <a href=\"https://mempalace.cloud/\" target=\"_blank\"
+                        class=\"border border-elevated hover:border-teal text-text text-sm font-semibold py-3 px-6 rounded text-center transition-colors\">Visit
+                        MemPalace.cloud</a>
+                </div>
+
+                <!-- Enterprise -->
+                <div
+                    class=\"bg-teal/5 border border-teal p-8 rounded-lg flex flex-col relative hover:bg-teal/[0.08] transition-all\">
+                    <div
+                        class=\"absolute top-4 right-4 bg-teal text-deep text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-widest\">
+                        Enterprise</div>
+                    <h3 class=\"font-serif text-2xl mb-2\">Business Automation</h3>
+                    <div class=\"text-teal font-mono text-xl mb-4\">Custom</div>
+                    <p class=\"text-muted text-sm mb-8 flex-grow leading-relaxed\">Want to give your WhatsApp chatbots and
+                        CRM long-term memory? We integrate MemPalace with n8n and Pabbly for service businesses.</p>
+                    <a href=\"https://vijayatech.in\" target=\"_blank\"
+                        class=\"bg-teal hover:bg-teal-hover text-deep text-sm font-semibold py-3 px-6 rounded text-center transition-colors\">Book
+                        VijayaTech Labs</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- INTEGRATIONS -->
+        <section id=\"integrations\" class=\"py-20 px-6 max-w-6xl mx-auto border-t border-elevated\">
+            <h2 class=\"font-serif text-3xl md:text-4xl mb-12\">Connect MemPalace to Your Workflow</h2>
+
+            <div class=\"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6\">
+                <article
+                    class=\"bg-surface border border-elevated p-6 rounded-lg hover:border-teal/30 transition-colors\">
+                    <h3 class=\"text-lg font-semibold mb-2 flex items-center gap-2\">
+                        <svg class=\"w-5 h-5 text-teal\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"
+                            stroke-width=\"2\">
+                            <path d=\"M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16\" />
+                            <circle cx=\"5\" cy=\"19\" r=\"1\" />
+                        </svg>
+                        Claude Code
+                    </h3>
+                    <p class=\"text-muted text-sm\">Native marketplace install, 1 command.</p>
+                </article>
+                <article
+                    class=\"bg-surface border border-elevated p-6 rounded-lg hover:border-teal/30 transition-colors\">
+                    <h3 class=\"text-lg font-semibold mb-2 flex items-center gap-2\">
+                        <svg class=\"w-5 h-5 text-teal\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"
+                            stroke-width=\"2\">
+                            <path d=\"M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z\" />
+                        </svg>
+                        ChatGPT
+                    </h3>
+                    <p class=\"text-muted text-sm\">Via MCP bridge, full tool access.</p>
+                </article>
+                <article
+                    class=\"bg-surface border border-elevated p-6 rounded-lg hover:border-teal/30 transition-colors\">
+                    <h3 class=\"text-lg font-semibold mb-2 flex items-center gap-2\">
+                        <svg class=\"w-5 h-5 text-teal\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"
+                            stroke-width=\"2\">
+                            <polyline points=\"16 18 22 12 16 6\" />
+                            <polyline points=\"8 6 2 12 8 18\" />
+                        </svg>
+                        Cursor
+                    </h3>
+                    <p class=\"text-muted text-sm\">Code editor with persistent memory.</p>
+                </article>
+                <article
+                    class=\"bg-surface border border-elevated p-6 rounded-lg hover:border-teal/30 transition-colors\">
+                    <h3 class=\"text-lg font-semibold mb-2 flex items-center gap-2\">
+                        <svg class=\"w-5 h-5 text-teal\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"
+                            stroke-width=\"2\">
+                            <path
+                                d=\"M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z\" />
+                        </svg>
+                        Gemini CLI
+                    </h3>
+                    <p class=\"text-muted text-sm\">Auto server + save hooks.</p>
+                </article>
+                <article
+                    class=\"bg-surface border border-elevated p-6 rounded-lg hover:border-teal/30 transition-colors\">
+                    <h3 class=\"text-lg font-semibold mb-2 flex items-center gap-2\">
+                        <svg class=\"w-5 h-5 text-teal\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"
+                            stroke-width=\"2\">
+                            <circle cx=\"12\" cy=\"12\" r=\"3\" />
+                            <path
+                                d=\"M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z\" />
+                        </svg>
+                        n8n / Make
+                    </h3>
+                    <p class=\"text-muted text-sm\">Search memories in automated workflows.</p>
+                </article>
+                <article
+                    class=\"bg-surface border border-elevated p-6 rounded-lg hover:border-teal/30 transition-colors\">
+                    <h3 class=\"text-lg font-semibold mb-2 flex items-center gap-2\">
+                        <svg class=\"w-5 h-5 text-teal\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"
+                            stroke-width=\"2\">
+                            <rect x=\"4\" y=\"4\" width=\"16\" height=\"16\" rx=\"2\" ry=\"2\" />
+                            <rect x=\"9\" y=\"9\" width=\"6\" height=\"6\" />
+                        </svg>
+                        Local LLMs
+                    </h3>
+                    <p class=\"text-muted text-sm\">Wake-up context injection (Llama, Mistral).</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- BENCHMARK COMPARISON -->
+        <section id=\"benchmarks\" class=\"py-20 px-6 max-w-6xl mx-auto border-t border-elevated\">
+            <div class=\"flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4\">
+                <div class=\"max-w-2xl\">
+                    <h2 class=\"font-serif text-3xl md:text-4xl mb-3\">How MemPalace Compares</h2>
+                    <p class=\"text-muted text-sm leading-relaxed\">
+                        The controversial <span class=\"text-text font-medium\">100% LongMemEval</span> hybrid score is
+                        the first perfect score on record. Unlike tools that use LLM embeddings to continually
+                        extract/summarize, MemPalace hits 96.6% running entirely local.
+                    </p>
+                </div>
+                <div
+                    class=\"bg-teal/10 border border-teal/20 text-teal text-xs px-3 py-1.5 rounded-full flex items-center gap-2 whitespace-nowrap\">
+                    <svg class=\"w-3.5 h-3.5\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\">
+                        <circle cx=\"12\" cy=\"12\" r=\"10\" />
+                        <line x1=\"12\" y1=\"8\" x2=\"12\" y2=\"12\" />
+                        <line x1=\"12\" y1=\"16\" x2=\"12.01\" y2=\"16\" />
+                    </svg>
+                    Highest published local result
+                </div>
+            </div>
+            <div class=\"overflow-x-auto bg-surface border border-elevated rounded-lg\">
+                <table class=\"w-full text-sm\">
+                    <thead>
+                        <tr>
+                            <th class=\"py-4 px-6 font-semibold\">Tool API / Memory System</th>
+                            <th class=\"py-4 px-6 font-semibold\">Recall (R@5)</th>
+                            <th class=\"py-4 px-6 font-semibold\">Runs Locally</th>
+                            <th class=\"py-4 px-6 font-semibold\">External API Required</th>
+                            <th class=\"py-4 px-6 font-semibold text-right\">Monthly Cost</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class=\"bg-teal/5 border-l-4 border-teal\">
+                            <td class=\"py-4 px-6 font-medium text-teal flex items-center gap-2\">MemPalace (Raw)</td>
+                            <td class=\"py-4 px-6 font-mono\">96.6%</td>
+                            <td class=\"py-4 px-6\">Yes</td>
+                            <td class=\"py-4 px-6\">No</td>
+                            <td class=\"py-4 px-6 font-mono text-right\">$0</td>
+                        </tr>
+                        <tr class=\"bg-teal/5 border-l-4 border-teal border-b border-deep\">
+                            <td class=\"py-4 px-6 font-medium text-teal\">MemPalace (Hybrid)</td>
+                            <td class=\"py-4 px-6 font-mono\">100%</td>
+                            <td class=\"py-4 px-6\">Optional</td>
+                            <td class=\"py-4 px-6\">Optional</td>
+                            <td class=\"py-4 px-6 font-mono text-right\">$0</td>
+                        </tr>
+                        <tr>
+                            <td class=\"py-4 px-6 text-muted\">Mem0</td>
+                            <td class=\"py-4 px-6 font-mono text-muted\">~85%</td>
+                            <td class=\"py-4 px-6 text-muted\">No</td>
+                            <td class=\"py-4 px-6 text-muted\">Yes</td>
+                            <td class=\"py-4 px-6 font-mono text-muted text-right\">$19–249</td>
+                        </tr>
+                        <tr>
+                            <td class=\"py-4 px-6 text-muted\">Zep</td>
+                            <td class=\"py-4 px-6 font-mono text-muted\">~85%</td>
+                            <td class=\"py-4 px-6 text-muted\">Enterprise Only</td>
+                            <td class=\"py-4 px-6 text-muted\">Yes</td>
+                            <td class=\"py-4 px-6 font-mono text-muted text-right\">$25+</td>
+                        </tr>
+                        <tr class=\"border-b-0\">
+                            <td class=\"py-4 px-6 text-muted\">Letta</td>
+                            <td class=\"py-4 px-6 font-mono text-muted\">N/A</td>
+                            <td class=\"py-4 px-6 text-muted\">No</td>
+                            <td class=\"py-4 px-6 text-muted\">Yes</td>
+                            <td class=\"py-4 px-6 font-mono text-muted text-right\">$20-200</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ARCHITECTURE VISUALIZER -->
+        <section id=\"architecture\" class=\"py-20 px-6 max-w-5xl mx-auto border-t border-elevated\">
+            <h2 class=\"font-serif text-3xl md:text-4xl mb-12 text-center\">How the Palace Works</h2>
+
+            <div class=\"grid grid-cols-1 md:grid-cols-4 gap-4 relative\">
+                <!-- Connectors for Desktop -->
+                <div
+                    class=\"hidden md:block absolute top-1/2 left-[12.5%] w-[75%] h-px bg-elevated -translate-y-1/2 z-0\">
+                </div>
+
+                <div
+                    class=\"bg-surface border border-elevated p-6 rounded-lg text-center relative z-10 hover:border-teal/40 transition-colors\">
+                    <div
+                        class=\"w-10 h-10 bg-teal/10 text-teal rounded-full flex items-center justify-center mx-auto mb-4 border border-teal/20 shadow-sm shadow-teal/5\">
+                        <svg class=\"w-5 h-5\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\">
+                            <path d=\"M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\" />
+                            <polyline points=\"9 22 9 12 15 12 15 22\" />
+                        </svg>
+                    </div>
+                    <h3 class=\"font-semibold text-text mb-1\">Wing</h3>
+                    <p class=\"text-[11px] text-muted uppercase font-mono\">Project / Person</p>
+                </div>
+
+                <div
+                    class=\"bg-surface border border-elevated p-6 rounded-lg text-center relative z-10 hover:border-teal/40 transition-colors\">
+                    <div
+                        class=\"w-10 h-10 bg-teal/10 text-teal rounded-full flex items-center justify-center mx-auto mb-4 border border-teal/20 shadow-sm shadow-teal/5\">
+                        <svg class=\"w-5 h-5\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\">
+                            <rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\" ry=\"2\" />
+                            <line x1=\"9\" y1=\"3\" x2=\"9\" y2=\"21\" />
+                        </svg>
+                    </div>
+                    <h3 class=\"font-semibold text-text mb-1\">Room</h3>
+                    <p class=\"text-[11px] text-muted uppercase font-mono\">Topic / Context</p>
+                </div>
+
+                <div
+                    class=\"bg-surface border border-elevated p-6 rounded-lg text-center relative z-10 hover:border-teal/40 transition-colors\">
+                    <div
+                        class=\"w-10 h-10 bg-teal/10 text-teal rounded-full flex items-center justify-center mx-auto mb-4 border border-teal/20 shadow-sm shadow-teal/5\">
+                        <svg class=\"w-5 h-5\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\">
+                            <path d=\"M20 7h-9m3 3H7m5 3H3m14 5h-4m1 1H9m3 3H3\" />
+                        </svg>
+                    </div>
+                    <h3 class=\"font-semibold text-text mb-1\">Closet</h3>
+                    <p class=\"text-[11px] text-muted uppercase font-mono\">AI Summary</p>
+                </div>
+
+                <div
+                    class=\"bg-surface border border-elevated p-6 rounded-lg text-center relative z-10 hover:border-teal/40 transition-colors\">
+                    <div
+                        class=\"w-10 h-10 bg-teal/10 text-teal rounded-full flex items-center justify-center mx-auto mb-4 border border-teal/20 shadow-sm shadow-teal/5\">
+                        <svg class=\"w-5 h-5\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\">
+                            <path d=\"M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z\" />
+                            <polyline points=\"14 2 14 8 20 8\" />
+                        </svg>
+                    </div>
+                    <h3 class=\"font-semibold text-text mb-1\">Drawer</h3>
+                    <p class=\"text-[11px] text-muted uppercase font-mono\">Raw Verbatim File</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 19 MCP TOOLS -->
+        <section id=\"tools\" class=\"py-20 px-6 max-w-6xl mx-auto border-t border-elevated\">
+            <h2 class=\"font-serif text-3xl md:text-4xl mb-8\">19 Tools Your AI Gets Instantly</h2>
+
+            <div class=\"bg-surface rounded-lg border border-elevated overflow-hidden\">
+                <div class=\"flex flex-wrap border-b border-elevated overflow-x-auto\" role=\"tablist\">
+                    <button id=\"tab-read\" class=\"tab-btn active px-6 py-4 font-medium text-sm whitespace-nowrap\"
+                        role=\"tab\" aria-controls=\"content-read\" aria-selected=\"true\" onclick=\"switchTab('read')\">Palace
+                        Read</button>
+                    <button id=\"tab-write\" class=\"tab-btn px-6 py-4 font-medium text-sm whitespace-nowrap\" role=\"tab\"
+                        aria-controls=\"content-write\" aria-selected=\"false\" onclick=\"switchTab('write')\">Palace
+                        Write</button>
+                    <button id=\"tab-kg\" class=\"tab-btn px-6 py-4 font-medium text-sm whitespace-nowrap\" role=\"tab\"
+                        aria-controls=\"content-kg\" aria-selected=\"false\" onclick=\"switchTab('kg')\">Knowledge
+                        Graph</button>
+                    <button id=\"tab-nav\" class=\"tab-btn px-6 py-4 font-medium text-sm whitespace-nowrap\" role=\"tab\"
+                        aria-controls=\"content-nav\" aria-selected=\"false\" onclick=\"switchTab('nav')\">Navigation &
+                        Agents</button>
+                </div>
+
+                <div class=\"p-6 md:p-8 min-h-[200px]\">
+                    <div id=\"content-read\" class=\"tab-content active\" role=\"tabpanel\" aria-labelledby=\"tab-read\">
+                        <ul class=\"grid grid-cols-1 md:grid-cols-2 gap-4 font-mono text-sm text-muted\">
+                            <li class=\"flex items-center gap-2\">
+                                <div class=\"w-1.5 h-1.5 rounded-full bg-teal\"></div> mempalace_status
+                            </li>
+                            <li class=\"flex items-center gap-2\">
+                                <div class=\"w-1.5 h-1.5 rounded-full bg-teal\"></div> mempalace_list_wings
+                            </li>
+                            <li class=\"flex items-center gap-2\">
+                                <div class=\"w-1.5 h-1.5 rounded-full bg-teal\"></div> mempalace_list_rooms
+                            </li>
+                            <li class=\"flex items-center gap-2\">
+                                <div class=\"w-1.5 h-1.5 rounded-full bg-teal\"></div> mempalace_get_taxonomy
+                            </li>
+                            <li class=\"flex items-center gap-2\">
+                                <div class=\"w-1.5 h-1.5 rounded-full bg-teal\"></div> mempalace_search
+                            </li>
+                            <li class=\"flex items-center gap-2\">
+                                <div class=\"w-1.5 h-1.5 rounded-full bg-teal\"></div> mempalace_check_duplicate
+                            </li>
+                            <li class=\"flex items-center gap-2\">
+                                <div class=\"w-1.5 h-1.5 rounded-full bg-teal\"></div> mempalace_get_aaak_spec
+                            </li>
+                        </ul>
+                    </div>
+                    <div id=\"content-write\" class=\"tab-content\" role=\"tabpanel\" aria-labelledby=\"tab-write\">
+                        <ul class=\"grid grid-cols-1 md:grid-cols-2 gap-4 font-mono text-sm text-muted\">
+                            <li class=\"flex items-center gap-2\">
+                                <div class=\"w-1.5 h-1.5 rounded-full bg-teal\"></div> mempalace_add_drawer
+                            </li>
+                            <li class=\"flex items-center gap-2\">
+                                <div class=\"w-1.5 h-1.5 rounded-full bg-teal\"></div> mempalace_delete_drawer
+                            </li>
+                        </ul>
+                    </div>
+                    <div id=\"content-kg\" class=\"tab-content\" role=\"tabpanel\" aria-labelledby=\"tab-kg\">
+                        <ul class=\"grid grid-cols-1 md:grid-cols-2 gap-4 font-mono text-sm text-muted\">
+                            <li class=\"flex items-center gap-2\">
+                                <div class=\"w-1.5 h-1.5 rounded-full bg-teal\"></div> mempalace_kg_query
+                            </li>
+                            <li class=\"flex items-center gap-2\">
+                                <div class=\"w-1.5 h-1.5 rounded-full bg-teal\"></div> mempalace_kg_add
+                            </li>
+                            <li class=\"flex items-center gap-2\">
+                                <div class=\"w-1.5 h-1.5 rounded-full bg-teal\"></div> mempalace_kg_invalidate
+                            </li>
+                            <li class=\"flex items-center gap-2\">
+                                <div class=\"w-1.5 h-1.5 rounded-full bg-teal\"></div> mempalace_kg_timeline
+                            </li>
+                            <li class=\"flex items-center gap-2\">
+                                <div class=\"w-1.5 h-1.5 rounded-full bg-teal\"></div> mempalace_kg_stats
+                            </li>
+                        </ul>
+                    </div>
+                    <div id=\"content-nav\" class=\"tab-content\" role=\"tabpanel\" aria-labelledby=\"tab-nav\">
+                        <ul class=\"grid grid-cols-1 md:grid-cols-2 gap-4 font-mono text-sm text-muted\">
+                            <li class=\"flex items-center gap-2\">
+                                <div class=\"w-1.5 h-1.5 rounded-full bg-teal\"></div> mempalace_traverse
+                            </li>
+                            <li class=\"flex items-center gap-2\">
+                                <div class=\"w-1.5 h-1.5 rounded-full bg-teal\"></div> mempalace_find_tunnels
+                            </li>
+                            <li class=\"flex items-center gap-2\">
+                                <div class=\"w-1.5 h-1.5 rounded-full bg-teal\"></div> mempalace_graph_stats
+                            </li>
+                            <li class=\"flex items-center gap-2\">
+                                <div class=\"w-1.5 h-1.5 rounded-full bg-teal\"></div> mempalace_diary_write
+                            </li>
+                            <li class=\"flex items-center gap-2\">
+                                <div class=\"w-1.5 h-1.5 rounded-full bg-teal\"></div> mempalace_diary_read
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                function switchTab(tabId) {
+                    document.querySelectorAll('.tab-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                        btn.setAttribute('aria-selected', 'false');
+                    });
+                    const activeBtn = document.getElementById(`tab-${tabId}`);
+                    activeBtn.classList.add('active');
+                    activeBtn.setAttribute('aria-selected', 'true');
+
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    document.getElementById(`content-${tabId}`).classList.add('active');
+                }
+            </script>
+        </section>
+
+        <!-- QUICK START -->
+        <section id=\"quickstart\" class=\"py-20 px-6 max-w-4xl mx-auto border-t border-elevated\">
+            <h2 class=\"font-serif text-3xl md:text-4xl mb-8\">Live in 60 Seconds</h2>
+
+            <div class=\"relative bg-surface rounded-lg border border-elevated p-6 overflow-hidden group\">
+                <div class=\"absolute top-4 right-4 flex gap-2\">
+                    <button id=\"copy-btn\"
+                        class=\"bg-elevated hover:bg-[#2b2b2b] text-muted text-xs px-3 py-1.5 rounded transition-colors flex items-center gap-1.5 border border-elevated border-b-0\"
+                        onclick=\"copyCode()\">
+                        <svg class=\"w-3.5 h-3.5 origin-center\" id=\"copy-icon\" viewBox=\"0 0 24 24\" fill=\"none\"
+                            stroke=\"currentColor\" stroke-width=\"2\">
+                            <rect x=\"9\" y=\"9\" width=\"13\" height=\"13\" rx=\"2\" ry=\"2\"></rect>
+                            <path d=\"M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1\"></path>
+                        </svg>
+                        <span id=\"copy-text\">Copy</span>
+                    </button>
+                </div>
+                <div class=\"flex gap-2 mb-4\">
+                    <div class=\"w-3 h-3 rounded-full bg-elevated\"></div>
+                    <div class=\"w-3 h-3 rounded-full bg-elevated\"></div>
+                    <div class=\"w-3 h-3 rounded-full bg-elevated\"></div>
+                </div>
+                <pre
+                    class=\"font-mono text-sm md:text-base text-text overflow-x-auto selection:bg-teal selection:text-deep\"><code id=\"code-block\">pip install mempalace
+mempalace init ~/projects/myapp
+claude mcp add mempalace -- python -m mempalace.mcp_server</code></pre>
+            </div>
+
+            <script>
+                function copyCode() {
+                    const codeBlock = document.getElementById('code-block').innerText;
+                    navigator.clipboard.writeText(codeBlock).then(() => {
+                        const btn = document.getElementById('copy-btn');
+                        const icon = document.getElementById('copy-icon');
+                        const text = document.getElementById('copy-text');
+
+                        icon.innerHTML = `<polyline points=\"20 6 9 17 4 12\"></polyline>`;
+                        text.innerText = `Copied`;
+                        btn.classList.add('text-teal');
+                        btn.classList.remove('text-muted');
+
+                        setTimeout(() => {
+                            icon.innerHTML = `<rect x=\"9\" y=\"9\" width=\"13\" height=\"13\" rx=\"2\" ry=\"2\"></rect><path d=\"M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1\"></path>`;
+                            text.innerText = `Copy`;
+                            btn.classList.remove('text-teal');
+                            btn.classList.add('text-muted');
+                        }, 2000);
+                    });
+                }
+            </script>
+        </section>
+
+        <!-- COMMUNITY REACTION / SOCIAL PROOF -->
+        <section id=\"pulse\" class=\"py-20 px-6 max-w-6xl mx-auto border-t border-elevated\">
+            <div class=\"flex flex-col md:flex-row justify-between items-center mb-12 gap-6\">
+                <h2 class=\"font-serif text-3xl md:text-4xl text-center md:text-left\">What the Community is Saying</h2>
+                <div class=\"flex items-center gap-6\">
+                    <div class=\"text-center\">
+                        <div class=\"text-2xl font-mono text-text\">3.1K+</div>
+                        <div class=\"text-xs text-muted uppercase tracking-wide\">Forks</div>
+                    </div>
+                    <div class=\"w-px h-8 bg-elevated\"></div>
+                    <div class=\"text-center\">
+                        <div class=\"text-2xl font-mono text-text\">158+</div>
+                        <div class=\"text-xs text-muted uppercase tracking-wide\">Open Issues</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class=\"grid grid-cols-1 md:grid-cols-3 gap-6\">
+                <div
+                    class=\"bg-surface border border-elevated p-6 rounded-lg relative hover:border-teal/20 transition-colors group\">
+                    <div class=\"flex items-center gap-3 mb-4\">
+                        <div
+                            class=\"w-10 h-10 rounded-full bg-teal/10 flex items-center justify-center text-teal font-serif font-bold border border-teal/20\">
+                            W</div>
+                        <div>
+                            <div class=\"font-medium text-sm text-text\">Wayne Sutton</div>
+                            <div class=\"text-xs text-muted\">@WayneSutton</div>
+                        </div>
+                    </div>
+                    <p class=\"text-sm text-muted leading-relaxed group-hover:text-text transition-colors\">\"Milla
+                        Jovovich launching an AI memory system was NOT on my 2026 bingo card.\"</p>
+                </div>
+
+                <div
+                    class=\"bg-surface border border-elevated p-6 rounded-lg relative hover:border-teal/20 transition-colors group\">
+                    <div class=\"flex items-center gap-3 mb-4\">
+                        <div
+                            class=\"w-10 h-10 rounded-full bg-teal/10 flex items-center justify-center text-teal font-serif font-bold border border-teal/20\">
+                            B</div>
+                        <div>
+                            <div class=\"font-medium text-sm text-text\">Brian Roemmele</div>
+                            <div class=\"text-xs text-muted\">@BrianRoemmele</div>
+                        </div>
+                    </div>
+                    <p class=\"text-sm text-muted leading-relaxed group-hover:text-text transition-colors\">\"We tested
+                        MemPalace at The Zero-Human Company and deployed it to 79 employees. This is a masterpiece.\"</p>
+                </div>
+
+                <div
+                    class=\"bg-surface border border-elevated p-6 rounded-lg relative hover:border-teal/20 transition-colors group\">
+                    <div class=\"flex items-center gap-3 mb-4\">
+                        <div
+                            class=\"w-10 h-10 rounded-full bg-deep flex items-center justify-center text-text font-mono font-bold border border-elevated\">
+                            Y</div>
+                        <div>
+                            <div class=\"font-medium text-sm text-text\">HackerNews</div>
+                            <div class=\"text-xs text-muted\">denysvitali</div>
+                        </div>
+                    </div>
+                    <p class=\"text-sm text-muted leading-relaxed group-hover:text-text transition-colors\">\"Yes, that
+                        Milla Jovovich. Missed opportunity to call it Resident Eval.\"</p>
+                </div>
+            </div>
+
+            <div
+                class=\"mt-8 bg-surface border border-elevated rounded-lg p-4 flex flex-col md:flex-row justify-between items-center gap-4 hover:border-teal/30 transition-colors\">
+                <div class=\"flex items-center gap-3\">
+                    <span class=\"relative flex h-3 w-3\">
+                        <span
+                            class=\"animate-ping absolute inline-flex h-full w-full rounded-full bg-teal opacity-75\"></span>
+                        <span class=\"relative inline-flex rounded-full h-3 w-3 bg-teal\"></span>
+                    </span>
+                    <span class=\"text-sm text-text font-medium whitespace-nowrap\">Trending Feature :</span>
+                    <span class=\"text-sm text-muted truncate max-w-[200px] md:max-w-md lg:max-w-lg\">Import support for
+                        Cursor, Copilot, Codex, Windsurf</span>
+                </div>
+                <a href=\"https://github.com/milla-jovovich/mempalace/issues/59\" target=\"_blank\"
+                    class=\"text-teal hover:text-teal-hover transition-colors text-xs font-semibold px-3 py-1.5 border border-teal/20 rounded whitespace-nowrap\">View
+                    Protocol</a>
+            </div>
+        </section>
+
+        <!-- TOKEN CALCULATOR -->
+        <section id=\"calculator\" class=\"py-20 px-6 max-w-4xl mx-auto border-t border-elevated\">
+            <h2 class=\"font-serif text-3xl md:text-4xl mb-4 text-center md:text-left\">Calculate Your Token Savings</h2>
+            <p class=\"text-muted mb-10 text-center md:text-left\">See how much you save by moving amnesic context to
+                local persistent memory.</p>
+
+            <div class=\"bg-surface border border-elevated p-8 rounded-xl\">
+                <div class=\"mb-12\">
+                    <div class=\"flex justify-between items-end mb-6\">
+                        <label for=\"token-slider\"
+                            class=\"text-xs font-bold text-text uppercase tracking-widest opacity-70\">Monthly Context
+                            Tokens</label>
+                        <span class=\"text-3xl font-serif text-teal\"><span id=\"token-value\">10</span>M</span>
+                    </div>
+                    <input type=\"range\" id=\"token-slider\" min=\"1\" max=\"50\" value=\"10\"
+                        class=\"w-full h-1.5 bg-elevated rounded-lg appearance-none cursor-pointer accent-teal\">
+                    <div class=\"flex justify-between mt-3 text-[10px] text-muted font-mono uppercase tracking-tighter\">
+                        <span>1 Million</span>
+                        <span>50 Million</span>
+                    </div>
+                </div>
+
+                <div class=\"grid grid-cols-1 md:grid-cols-3 gap-4\">
+                    <div class=\"bg-deep border border-elevated p-6 rounded-lg transition-transform hover:scale-[1.02]\">
+                        <div class=\"text-[10px] uppercase tracking-widest text-muted mb-3 font-semibold\">Standard LLM
+                            Context</div>
+                        <div class=\"text-2xl font-serif text-text\">$<span id=\"standard-cost\">150</span>.00</div>
+                        <div class=\"text-[10px] text-muted mt-2 uppercase italic opacity-60\">API In-Context</div>
+                    </div>
+                    <div class=\"bg-deep border border-elevated p-6 rounded-lg opacity-60\">
+                        <div class=\"text-[10px] uppercase tracking-widest text-muted mb-3 font-semibold\">Mem0 API
+                            (Cloud)</div>
+                        <div class=\"text-2xl font-serif text-text\">$50.00</div>
+                        <div class=\"text-[10px] text-muted mt-2 uppercase italic opacity-60\">SaaS Subscription</div>
+                    </div>
+                    <div
+                        class=\"bg-teal/10 border border-teal/40 p-6 rounded-lg ring-1 ring-teal/20 relative overflow-hidden group\">
+                        <div class=\"absolute -right-4 -top-4 w-12 h-12 bg-teal/10 rotate-45 transform\"></div>
+                        <div class=\"text-[10px] uppercase tracking-widest text-teal mb-3 font-bold\">MemPalace.in</div>
+                        <div class=\"text-2xl font-serif text-teal\">$0.00</div>
+                        <div class=\"text-[10px] text-teal/80 mt-2 uppercase italic font-bold\">100% Local Storage</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ SECTION -->
+        <section id=\"faq\" class=\"py-20 px-6 max-w-4xl mx-auto border-t border-elevated\">
+            <h2 class=\"font-serif text-3xl md:text-4xl mb-8\">Frequently Asked Questions</h2>
+
+            <div class=\"grid gap-4\">
+                <details class=\"bg-surface border border-elevated rounded-lg group\" open>
+                    <summary class=\"p-6 font-medium flex justify-between items-center outline-none\">
+                        What is MemPalace?
+                        <svg class=\"faq-icon w-5 h-5 text-muted group-hover:text-text transition-colors\"
+                            viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\">
+                            <path d=\"M12 5v14M5 12h14\" />
+                        </svg>
+                    </summary>
+                    <div class=\"px-6 pb-6 text-muted text-sm leading-relaxed border-t border-elevated pt-4 mt-2\">
+                        An open-source, local AI memory system that uses a memory palace metaphor (wings, rooms,
+                        closets, drawers) to store and retrieve agent conversations.
+                    </div>
+                </details>
+
+                <details class=\"bg-surface border border-elevated rounded-lg group\">
+                    <summary class=\"p-6 font-medium flex justify-between items-center outline-none\">
+                        Does MemPalace require an API key?
+                        <svg class=\"faq-icon w-5 h-5 text-muted group-hover:text-text transition-colors\"
+                            viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\">
+                            <path d=\"M12 5v14M5 12h14\" />
+                        </svg>
+                    </summary>
+                    <div class=\"px-6 pb-6 text-muted text-sm leading-relaxed border-t border-elevated pt-4 mt-2\">
+                        No. MemPalace runs 100% locally using ChromaDB and SQLite, requiring zero cloud dependencies.
+                    </div>
+                </details>
+
+                <details class=\"bg-surface border border-elevated rounded-lg group\">
+                    <summary class=\"p-6 font-medium flex justify-between items-center outline-none\">
+                        What is the LongMemEval score for MemPalace?
+                        <svg class=\"faq-icon w-5 h-5 text-muted group-hover:text-text transition-colors\"
+                            viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\">
+                            <path d=\"M12 5v14M5 12h14\" />
+                        </svg>
+                    </summary>
+                    <div class=\"px-6 pb-6 text-muted text-sm leading-relaxed border-t border-elevated pt-4 mt-2\">
+                        In raw verbatim mode, MemPalace scores 96.6% R@5 on 500 questions, independent of LLM APIs.
+                    </div>
+                </details>
+
+                <details class=\"bg-surface border border-elevated rounded-lg group\">
+                    <summary class=\"p-6 font-medium flex justify-between items-center outline-none\">
+                        How do I connect MemPalace to Claude?
+                        <svg class=\"faq-icon w-5 h-5 text-muted group-hover:text-text transition-colors\"
+                            viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\">
+                            <path d=\"M12 5v14M5 12h14\" />
+                        </svg>
+                    </summary>
+                    <div class=\"px-6 pb-6 text-muted text-sm leading-relaxed border-t border-elevated pt-4 mt-2\">
+                        Run <code
+                            class=\"bg-[#2b2b2b] px-1.5 py-0.5 rounded text-teal font-mono text-xs\">claude plugin marketplace add milla-jovovich/mempalace</code>
+                        in your terminal.
+                    </div>
+                </details>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class=\"bg-surface border-t border-elevated mt-auto\">
+        <div
+            class=\"max-w-6xl mx-auto px-6 py-12 flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-muted\">
+            <div class=\"flex flex-col gap-2 items-center md:items-start text-center md:text-left\">
+                <div class=\"flex gap-4\">
+                    <a href=\"https://github.com/milla-jovovich/mempalace\" target=\"_blank\" rel=\"noopener noreferrer\"
+                        class=\"hover:text-teal transition-colors flex items-center gap-1\">
+                        <svg class=\"w-4 h-4\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\">
+                            <path
+                                d=\"M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22\">
+                            </path>
+                        </svg>
+                        GitHub
+                    </a>
+                    <a href=\"https://github.com/milla-jovovich/mempalace\" target=\"_blank\" rel=\"noopener noreferrer\"
+                        class=\"hover:text-teal transition-colors flex items-center gap-1\">
+                        <svg class=\"w-4 h-4\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\">
+                            <path d=\"M4 19.5A2.5 2.5 0 0 1 6.5 17H20\"></path>
+                            <path d=\"M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z\"></path>
+                        </svg>
+                        Official Docs
+                    </a>
+                </div>
+                <p class=\"mt-2\">MemPalace.in is an independent community resource. Not affiliated with the official
+                    MemPalace repository.</p>
+            </div>
+
+            <div class=\"flex flex-col gap-5 items-center md:items-end w-full md:w-auto\">
+                <form
+                    class=\"flex w-full md:w-auto border border-elevated rounded-md overflow-hidden shadow-sm hover:border-teal/30 transition-colors group\"
+                    action=\"https://ai-memory-weekly.beehiiv.com/\" target=\"_blank\" rel=\"noopener noreferrer\">
+                    <input type=\"email\" placeholder=\"AI Memory Weekly...\"
+                        class=\"bg-deep px-4 py-2 text-sm text-text focus:outline-none flex-grow w-full md:w-64\"
+                        required>
+                    <button type=\"submit\"
+                        class=\"bg-surface group-hover:bg-elevated text-teal px-4 py-2 text-sm font-semibold transition-colors border-l border-elevated\">Subscribe</button>
+                </form>
+                <p class=\"text-center md:text-right\">Built by Viswanatha Reddy | <a href=\"https://vijayatech.in\"
+                        target=\"_blank\" rel=\"noopener noreferrer\"
+                        class=\"text-text hover:text-teal transition-colors font-medium\">VijayaTech Labs</a> & atharva
+                    Labs</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 1. Live GitHub Stars
+        async function fetchGitHubStars() {
+            const el = document.getElementById('github-stars');
+            if (!el) return;
+
+            try {
+                // Using a 5s timeout for the fetch
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+                const response = await fetch('https://api.github.com/repos/milla-jovovich/mempalace', { signal: controller.signal });
+                clearTimeout(timeoutId);
+
+                const data = await response.json();
+                if (data.stargazers_count) {
+                    const stars = data.stargazers_count;
+                    const formatted = stars > 1000 ? (stars / 1000).toFixed(1) + 'K+' : stars;
+                    el.innerText = formatted;
+                }
+            } catch (error) {
+                console.error('Error fetching GitHub stars:', error);
+                // Fallback is handled by the hardcoded value in HTML
+            }
+        }
+
+        // 2. Token Savings Calculator
+        function initCalculator() {
+            const slider = document.getElementById('token-slider');
+            const tokenValue = document.getElementById('token-value');
+            const standardCost = document.getElementById('standard-cost');
+
+            if (!slider || !tokenValue || !standardCost) return;
+
+            const updateCalc = () => {
+                const val = slider.value;
+                tokenValue.innerText = val;
+                // Slider value * $15.00 per million tokens (approx blended rate for high-context windows)
+                const cost = val * 15;
+                standardCost.innerText = cost.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+            };
+
+            slider.addEventListener('input', updateCalc);
+            updateCalc();
+        }
+
+        // Initialize everything on DOMContentLoaded
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchGitHubStars();
+            initCalculator();
+        });
+    </script>
+</body>
+</html>
